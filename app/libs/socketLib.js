@@ -12,9 +12,10 @@ const check = require("./checkLib.js");
 const response = require('./responseLib')
 const gameConfig = require('./../../config/gameConfig');
 
-//Storing States in Two Array
+//Storing States in Two Array and creating gameState object
 let allObstacles = [];
 let allOnlineUsers = [];
+let gameState = {allObstacles:allObstacles,allOnlineUsers:allOnlineUsers};
 //End Storing States
 
 let startMyInterVal;
@@ -565,5 +566,6 @@ let setServer = (server) => {
 
 
 module.exports = {
-    setServer: setServer
+    setServer: setServer,
+    gameState:gameState
 }
