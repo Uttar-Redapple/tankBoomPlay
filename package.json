@@ -1,0 +1,21 @@
+{
+  "name": "tankboom",
+  "version": "1.0.0",
+  "description": "A multiplayer tank Game using io",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "uttar roy",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.1",
+    "morgan": "^1.9.1",
+    "pino": "^5.12.6",
+    "shortid": "^2.2.14",
+    "socket.io": "^2.2.0"
+  }
+}
