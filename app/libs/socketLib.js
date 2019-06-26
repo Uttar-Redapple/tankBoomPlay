@@ -69,6 +69,13 @@ let updatePlayerPos = (data,player)=>{
 
 }//End Update Player Position
 
+//Kill Player
+let killPlayer = (data)=>{
+    let removeIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(data.userId);
+    allOnlineUsers.splice(removeIndex,1)
+    return data.userId;
+}// End kill Player
+
 //random direction
 let randDirX = ()=>{
     let dir=["right","left"];
@@ -343,6 +350,9 @@ let setServer = (server) => {
                         playerHurt.hitType="bullet";
                         io.in(socket.room).emit("playerHealthUpdate",playerHurt)
 
+                    }else{
+                        let deadPlayer = killPlayer(playerHurt);
+                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
                    
@@ -359,6 +369,9 @@ let setServer = (server) => {
                         playerHurt.hitType="obstacle";
                         io.in(socket.room).emit("playerHealthUpdate",playerHurt)
 
+                    }else{
+                        let deadPlayer = killPlayer(playerHurt);
+                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
                 }else if(data.obstacleType==2){
                     console.log(data.userId+"hit by triangle");
@@ -368,6 +381,9 @@ let setServer = (server) => {
                         playerHurt.hitType="obstacle";
                         io.in(socket.room).emit("playerHealthUpdate",playerHurt)
 
+                    }else{
+                        let deadPlayer = killPlayer(playerHurt);
+                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
                 }else if(data.obstacleType==1){
@@ -377,6 +393,9 @@ let setServer = (server) => {
                         playerHurt.isDead=false;
                         playerHurt.hitType="obstacle";
                         io.in(socket.room).emit("playerHealthUpdate",playerHurt)
+                    }else{
+                        let deadPlayer = killPlayer(playerHurt);
+                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
 
