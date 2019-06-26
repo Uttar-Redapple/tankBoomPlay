@@ -127,7 +127,7 @@ let updatePos = ()=>{
             obj.X+=1;
         }else if(obj.Xdir=="right" && obj.X>=gameConfig.boundXLimit){
             console.log("upper X limit reached,current direction :" + obj.Xdir)
-            obj.Xdir=reverseDir();
+            obj.Xdir=reverseDir(obj.Xdir);
             console.log("direction reversed to :" + obj.Xdir)
             obj.X-=2;
         }
@@ -136,7 +136,7 @@ let updatePos = ()=>{
             obj.X-=1;
         }else if(obj.Xdir=="left" && obj.X<=150){
             console.log("lower X limit reached,current direction :" + obj.Xdir)
-            obj.Xdir=reverseDir();
+            obj.Xdir=reverseDir(obj.Xdir);
             console.log("direction reversed to :" + obj.Xdir)
             obj.X+=2;
         }
@@ -145,7 +145,7 @@ let updatePos = ()=>{
            obj.Y+=1;
        }else if(obj.Ydir=="down" && obj.Y>=gameConfig.boundYLimit){
            console.log("upper Y limit reached,current direction :" + obj.Ydir)
-           obj.Ydir=reverseDir();
+           obj.Ydir=reverseDir(obj.Ydir);
            console.log("direction reversed to :" + obj.Ydir)
            obj.Y-=2;
        }
@@ -154,7 +154,7 @@ let updatePos = ()=>{
            obj.Y-=1;
        }else if(obj.Ydir=="up" && obj.Y<=150){
            console.log("lower Y limit reached,current direction :" + obj.Ydir)
-           obj.Ydir=reverseDir();
+           obj.Ydir=reverseDir(obj.Ydir);
            console.log("direction reversed to :" + obj.Ydir)
            obj.Y+=2;
        }
@@ -389,9 +389,6 @@ let setServer = (server) => {
         socket.on("obstacleHit",(data)=>{
             let obsObj = getObj(data);
             if(data.hitType=="bullet"){
-                
-            
-                console.log(`${data.id} got hit`)
                 
                 if(check.isEmpty(obsObj)){
                     socket.emit("obstacleHealthUpdate",response.generate(true,"data received with some error,No such object found in list",0,obsObj))
