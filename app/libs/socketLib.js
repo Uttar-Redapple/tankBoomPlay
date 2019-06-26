@@ -126,28 +126,36 @@ let updatePos = ()=>{
         if(obj.Xdir=="right" && obj.X<gameConfig.boundXLimit){
             obj.X+=1;
         }else if(obj.Xdir=="right" && obj.X>=gameConfig.boundXLimit){
+            console.log("upper X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir();
+            console.log("direction reversed to :" + obj.Xdir)
             obj.X-=2;
         }
 
         if(obj.Xdir=="left" && obj.X>150){
             obj.X-=1;
         }else if(obj.Xdir=="left" && obj.X<=150){
+            console.log("lower X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir();
+            console.log("direction reversed to :" + obj.Xdir)
             obj.X+=2;
         }
    
        if(obj.Ydir=="down" && obj.Y<gameConfig.boundYLimit){
            obj.Y+=1;
        }else if(obj.Ydir=="down" && obj.Y>=gameConfig.boundYLimit){
+           console.log("upper Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir();
+           console.log("direction reversed to :" + obj.Ydir)
            obj.Y-=2;
        }
 
        if(obj.Ydir=="up" && obj.Y>150){
            obj.Y-=1;
        }else if(obj.Ydir=="up" && obj.Y<=150){
+           console.log("lower Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir();
+           console.log("direction reversed to :" + obj.Ydir)
            obj.Y+=2;
        }
 
@@ -296,7 +304,7 @@ let setServer = (server) => {
                }
            }
 
-         console.log(allObstacles);
+         //console.log(allObstacles);
          socket.emit("obstacleList",response.generate(false,"Obstacle List",1,allObstacles))
         })//End Create Obstacle
 
