@@ -126,36 +126,36 @@ let updatePos = ()=>{
         if(obj.Xdir=="right" && obj.X<gameConfig.boundXLimit){
             obj.X+=1;
         }else if(obj.Xdir=="right" && obj.X>=gameConfig.boundXLimit){
-            console.log("upper X limit reached,current direction :" + obj.Xdir)
+            //console.log("upper X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir(obj.Xdir);
-            console.log("direction reversed to :" + obj.Xdir)
+            //console.log("direction reversed to :" + obj.Xdir)
             obj.X-=2;
         }
 
         if(obj.Xdir=="left" && obj.X>150){
             obj.X-=1;
         }else if(obj.Xdir=="left" && obj.X<=150){
-            console.log("lower X limit reached,current direction :" + obj.Xdir)
+            //console.log("lower X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir(obj.Xdir);
-            console.log("direction reversed to :" + obj.Xdir)
+            //console.log("direction reversed to :" + obj.Xdir)
             obj.X+=2;
         }
    
        if(obj.Ydir=="down" && obj.Y<gameConfig.boundYLimit){
            obj.Y+=1;
        }else if(obj.Ydir=="down" && obj.Y>=gameConfig.boundYLimit){
-           console.log("upper Y limit reached,current direction :" + obj.Ydir)
+           //console.log("upper Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir(obj.Ydir);
-           console.log("direction reversed to :" + obj.Ydir)
+           //console.log("direction reversed to :" + obj.Ydir)
            obj.Y-=2;
        }
 
        if(obj.Ydir=="up" && obj.Y>150){
            obj.Y-=1;
        }else if(obj.Ydir=="up" && obj.Y<=150){
-           console.log("lower Y limit reached,current direction :" + obj.Ydir)
+           //console.log("lower Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir(obj.Ydir);
-           console.log("direction reversed to :" + obj.Ydir)
+           //console.log("direction reversed to :" + obj.Ydir)
            obj.Y+=2;
        }
 
@@ -352,6 +352,7 @@ let setServer = (server) => {
                 if(check.isEmpty(playerHurt)){
                     socket.emit("playerHealthUpdate",response.generate(true,"data received with some error,No such player found in list",0,playerHurt))
                 }else if(data.obstacleType==3){
+                    console.log(data.userId+"hit by pentagon");
                     if(playerHurt.userMaxHealth>0.05){
                         playerHurt.userMaxHealth-=0.05;
                         playerHurt.isDead=false;
@@ -360,6 +361,7 @@ let setServer = (server) => {
 
                     }
                 }else if(data.obstacleType==2){
+                    console.log(data.userId+"hit by triangle");
                     if(playerHurt.userMaxHealth>0.033){
                         playerHurt.userMaxHealth-=0.033;
                         playerHurt.isDead=false;
@@ -369,6 +371,7 @@ let setServer = (server) => {
                     }
 
                 }else if(data.obstacleType==1){
+                    console.log(data.userId+"hit by triangle");
                     if(playerHurt.userMaxHealth>0.025){
                         playerHurt.userMaxHealth-=0.025;
                         playerHurt.isDead=false;
