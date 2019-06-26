@@ -11,8 +11,12 @@ const eventEmitter = new events.EventEmitter();
 const check = require("./checkLib.js");
 const response = require('./responseLib')
 const gameConfig = require('./../../config/gameConfig');
+
+//Storing States in Two Array
 let allObstacles = [];
 let allOnlineUsers = [];
+//End Storing States
+
 let startMyInterVal;
 
 //get Player object from List
@@ -529,7 +533,7 @@ let setServer = (server) => {
             // unsubscribe the user from his own channel
 
             console.log("user is disconnected");
-            // console.log(socket.connectorName);
+            
             console.log(socket.userId);
             clearInterval(startMyInterVal)
             console.log("Interval Cleared")
@@ -537,9 +541,9 @@ let setServer = (server) => {
 
             var removeIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(socket.userId);
             allOnlineUsers.splice(removeIndex,1)
-            console.log(allOnlineUsers)
+            //console.log(allOnlineUsers)
 
-            socket.to(socket.room).broadcast.emit('userDisconnected',`${socket.userId} is offline`);
+            socket.to(socket.room).broadcast.emit('userDisconnected',{userId:socket.userId});
             socket.leave(socket.room)
 
 
