@@ -21,7 +21,7 @@ app.use(cookieParser());
 app.use(routeLoggerMiddleware.logIp);
 app.use(globalErrorMiddleware.globalErrorHandler);
 
-app.use(express.static(path.join(__dirname, 'client')));
+//app.use(express.static(path.join(__dirname, 'client')));
 
 
 
@@ -134,6 +134,7 @@ process.on('unhandledRejection', (reason, p) => {
 /**
  * database connection settings
  */
+/*
 mongoose.connection.on('error', function (err) {
   console.log('database connection error');
   console.log(err)
@@ -155,6 +156,6 @@ mongoose.connection.on('open', function (err) {
   //process.exit(1)
 }); // enr mongoose connection open handler
 
-
+*/
 
 module.exports = app;
