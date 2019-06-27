@@ -136,39 +136,39 @@ let updatePos = ()=>{
     for(obj of allObstacles){
 
         if(obj.Xdir=="right" && obj.X<gameConfig.boundXLimit){
-            obj.X+=1;
+            obj.X+=0.3;
         }else if(obj.Xdir=="right" && obj.X>=gameConfig.boundXLimit){
             //console.log("upper X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir(obj.Xdir);
             //console.log("direction reversed to :" + obj.Xdir)
-            obj.X-=2;
+            obj.X-=1;
         }
 
         if(obj.Xdir=="left" && obj.X>150){
-            obj.X-=1;
+            obj.X-=0.3;
         }else if(obj.Xdir=="left" && obj.X<=150){
             //console.log("lower X limit reached,current direction :" + obj.Xdir)
             obj.Xdir=reverseDir(obj.Xdir);
             //console.log("direction reversed to :" + obj.Xdir)
-            obj.X+=2;
+            obj.X+=1;
         }
    
        if(obj.Ydir=="down" && obj.Y<gameConfig.boundYLimit){
-           obj.Y+=1;
+           obj.Y+=0.3;
        }else if(obj.Ydir=="down" && obj.Y>=gameConfig.boundYLimit){
            //console.log("upper Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir(obj.Ydir);
            //console.log("direction reversed to :" + obj.Ydir)
-           obj.Y-=2;
+           obj.Y-=1;
        }
 
        if(obj.Ydir=="up" && obj.Y>150){
-           obj.Y-=1;
+           obj.Y-=0.3;
        }else if(obj.Ydir=="up" && obj.Y<=150){
            //console.log("lower Y limit reached,current direction :" + obj.Ydir)
            obj.Ydir=reverseDir(obj.Ydir);
            //console.log("direction reversed to :" + obj.Ydir)
-           obj.Y+=2;
+           obj.Y+=1;
        }
 
     }
@@ -331,7 +331,7 @@ let setServer = (server) => {
                  updatePos()
 
                  socket.emit("obstacleMovement",allObstacles)
-                },1200/16)
+                },1200/24)
                  
                                
 
