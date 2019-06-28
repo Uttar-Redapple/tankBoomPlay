@@ -370,14 +370,15 @@ let setServer = (server) => {
                         playerHurt.userMaxHealth-=0.1;
                         playerHurt.isDead=false;
                         playerHurt.hitType="bullet";
-                        io.in(socket.room).emit("playerHealthUpdate",playerHurt)
+                        socket.emit("playerHealthUpdate",playerHurt)
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
                         console.log("user is killed :");
             
                         console.log(deadPlayer);
-                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        clearInterval(startMyInterVal)
+                        socket.to(socket.room).broadcast.emit("userKilled",{userId:deadPlayer})
                         socket.leave(socket.room)
                     }
 
@@ -393,14 +394,15 @@ let setServer = (server) => {
                         playerHurt.userMaxHealth-=0.05;
                         playerHurt.isDead=false;
                         playerHurt.hitType="obstacle";
-                        io.in(socket.room).emit("playerHealthUpdate",playerHurt)
+                        socket.emit("playerHealthUpdate",playerHurt)
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
                         console.log("user is killed :");
             
                         console.log(deadPlayer);
-                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        clearInterval(startMyInterVal)
+                        socket.to(socket.room).broadcast.emit("userKilled",{userId:deadPlayer})
                         socket.leave(socket.room)
                     }
                 }else if(data.obstacleType==2){
@@ -409,14 +411,15 @@ let setServer = (server) => {
                         playerHurt.userMaxHealth-=0.033;
                         playerHurt.isDead=false;
                         playerHurt.hitType="obstacle";
-                        io.in(socket.room).emit("playerHealthUpdate",playerHurt)
+                        socket.emit("playerHealthUpdate",playerHurt)
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
                         console.log("user is killed :");
             
                         console.log(deadPlayer);
-                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        clearInterval(startMyInterVal)
+                        socket.to(socket.room).broadcast.emit("userKilled",{userId:deadPlayer})
                         socket.leave(socket.room)
                     }
 
@@ -426,13 +429,14 @@ let setServer = (server) => {
                         playerHurt.userMaxHealth-=0.025;
                         playerHurt.isDead=false;
                         playerHurt.hitType="obstacle";
-                        io.in(socket.room).emit("playerHealthUpdate",playerHurt)
+                        socket.emit("playerHealthUpdate",playerHurt)
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
                         console.log("user is killed :");
             
                         console.log(deadPlayer);
-                        io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        clearInterval(startMyInterVal)
+                        socket.to(socket.room).broadcast.emit("userKilled",{userId:deadPlayer})
                         socket.leave(socket.room)
                     }
 
@@ -561,7 +565,7 @@ let setServer = (server) => {
  
 
 
-        socket.on('disconnect', () => {
+      /*  socket.on('disconnect', () => {
             // disconnect the user from socket
             // remove the user from online list
             // unsubscribe the user from his own channel
@@ -586,7 +590,7 @@ let setServer = (server) => {
         
 
 
-        }) // end of on disconnect
+        }) // end of on disconnect*/
 
 
 
