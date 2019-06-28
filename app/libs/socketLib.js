@@ -378,6 +378,7 @@ let setServer = (server) => {
             
                         console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        socket.leave(socket.room)
                     }
 
                    
@@ -400,6 +401,7 @@ let setServer = (server) => {
             
                         console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        socket.leave(socket.room)
                     }
                 }else if(data.obstacleType==2){
                     //console.log(data.userId+"hit by triangle");
@@ -415,6 +417,7 @@ let setServer = (server) => {
             
                         console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        socket.leave(socket.room)
                     }
 
                 }else if(data.obstacleType==1){
@@ -430,6 +433,7 @@ let setServer = (server) => {
             
                         console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
+                        socket.leave(socket.room)
                     }
 
 
