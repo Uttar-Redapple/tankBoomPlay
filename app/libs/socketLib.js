@@ -13,14 +13,14 @@ const response = require('./responseLib')
 const gameConfig = require('./../../config/gameConfig');
 
 //Storing States in Two Array and creating gameState object
-let allObstacles = [];
-let allOnlineUsers = [];
-let gameState = {allObstacles:allObstacles,allOnlineUsers:allOnlineUsers};
+let allObstacles = [];//Using redis hash should improve performance
+let allOnlineUsers = [];//Using redis hash should improve performance
+
 //End Storing States
 
 let startMyInterVal;
 
-//get Player object from List
+//get Player object from List(with for loop time complexity is O(n),can be improved to O(1) if redis hash used)
 let getPlayer = (data)=>{
     for(player of allOnlineUsers){
         if(player.userId==data.userId){
@@ -74,7 +74,7 @@ let updatePlayerPos = (data,player)=>{
 
 }//End Update Player Position
 
-//Kill Player
+//Kill Player(with for loop time complexity is O(n),can be improved to O(1) if redis hash used)
 let killPlayer = (data)=>{
     let removeIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(data.userId);
     allOnlineUsers.splice(removeIndex,1)
@@ -132,7 +132,7 @@ let reverseDir = (dir)=>{
 
 //Updating Positions of Objects
 let updatePos = ()=>{
-
+    //(with for loop time complexity is O(n),can be improved to O(1) if redis hash used)
     for(obj of allObstacles){
 
         if(obj.Xdir=="right" && obj.X<gameConfig.boundXLimit){
@@ -175,7 +175,7 @@ let updatePos = ()=>{
 
 }//End Updating Object Positions
 
-//Object Collision with Bullets
+//Object Collision with Bullets(with for loop time complexity is O(n),can be improved to O(1) if redis hash used)
 let getObj = (data)=>{
     for(obj of allObstacles){
         if((obj.id==data.obstacleID) && data.isHit){
@@ -187,7 +187,7 @@ let getObj = (data)=>{
 
 }//End Object Collision
 
-//Object Killed
+//Object Killed(with for loop time complexity is O(n),can be improved to O(1) if redis hash used)
 let killObj = (data)=>{
     //console.log("An Object has been Killed")
     let removeObjIndex = allObstacles.map(function(object) { return object.id; }).indexOf(data.id);
@@ -255,7 +255,7 @@ let setServer = (server) => {
                  // joining game-room.
                  socket.join(socket.room)
                  userObj.room = socket.room;
-                 allOnlineUsers.push(userObj)
+                 allOnlineUsers.push(userObj)//Using redis hash should improve performance
                  console.log(allOnlineUsers)
                  socket.emit("connected_room", response.generate(false,"User entered room",1,allOnlineUsers));
 
@@ -270,16 +270,18 @@ let setServer = (server) => {
         //Handling Player movement
         socket.on("playerMovementDirection",(data)=>{
             //console.log("Player Movement Data for : "+data.userId);
-            let currentPlayer = getPlayer(data);
+            let currentPlayer = getPlayer(data);//Aynchronous code can be used to improve performance
             if(check.isEmpty(currentPlayer)){
-                io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                //io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                socket.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
 
             }else{
                 //console.log("Current Player : "+ currentPlayer.userId);
                 let playerMove = updatePlayerPos(data,currentPlayer);
 
-                io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                //io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                socket.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
             }
                    
@@ -310,7 +312,7 @@ let setServer = (server) => {
            if(allObstacles.length==0){
                for(i=0;i<gameConfig.maxNumberOfObstacles;i++){
                    let obstacle = new createObstacles();
-                   allObstacles.push(obstacle);
+                   allObstacles.push(obstacle);//Using redis hash should improve performance
                    
 
                }
@@ -341,7 +343,7 @@ let setServer = (server) => {
         })
         //Handling Player Hit
         socket.on("playerHit",(data)=>{
-            let playerHurt = getPlayer(data);
+            let playerHurt = getPlayer(data);//Aynchronous code can be used to improve performance
             if(data.hitType=="bullet"){
 
                 
@@ -414,7 +416,7 @@ let setServer = (server) => {
 
         //Handling Obstacle Hit
         socket.on("obstacleHit",(data)=>{
-            let obsObj = getObj(data);
+            let obsObj = getObj(data);//Aynchronous code can be used to improve performance
             if(data.hitType=="bullet"){
                 
                 if(check.isEmpty(obsObj)){
@@ -539,7 +541,7 @@ let setServer = (server) => {
             clearInterval(startMyInterVal)
             console.log("Interval Cleared")
 
-
+            //Using redis hash should improve performance
             var removeIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(socket.userId);
             allOnlineUsers.splice(removeIndex,1)
             //console.log(allOnlineUsers)
@@ -566,6 +568,5 @@ let setServer = (server) => {
 
 
 module.exports = {
-    setServer: setServer,
-    gameState:gameState
+    setServer: setServer
 }
