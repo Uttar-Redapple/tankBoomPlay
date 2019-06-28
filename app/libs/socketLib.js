@@ -263,7 +263,7 @@ let setServer = (server) => {
             })
 
 
-
+2
           
         }) // end of listening addUser and gameRequest event
         
@@ -271,18 +271,20 @@ let setServer = (server) => {
         socket.on("playerMovementDirection",(data)=>{
             console.log("Player Movement Data for : "+data.userId);
             console.log("Current Player List :" ,allOnlineUsers)
-           /* let currentPlayer = getPlayer(data);
+           let currentPlayer = getPlayer(data);
             if(check.isEmpty(currentPlayer)){
-                io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                //io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                myIo.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
 
             }else{
                 console.log("Current Player : "+ currentPlayer.userId);
                 let playerMove = updatePlayerPos(data,currentPlayer);
 
-                io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                //io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                myIo.emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
 
-            }*/
+            }
                 
         })//End Handling Player Movement
 
