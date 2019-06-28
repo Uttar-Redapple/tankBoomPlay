@@ -364,6 +364,9 @@ let setServer = (server) => {
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
+                        console.log("user is killed :");
+            
+                        console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
@@ -383,6 +386,9 @@ let setServer = (server) => {
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
+                        console.log("user is killed :");
+            
+                        console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
                 }else if(data.obstacleType==2){
@@ -395,6 +401,9 @@ let setServer = (server) => {
 
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
+                        console.log("user is killed :");
+            
+                        console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
@@ -407,6 +416,9 @@ let setServer = (server) => {
                         io.in(socket.room).emit("playerHealthUpdate",playerHurt)
                     }else{
                         let deadPlayer = killPlayer(playerHurt);
+                        console.log("user is killed :");
+            
+                        console.log(deadPlayer);
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
 
