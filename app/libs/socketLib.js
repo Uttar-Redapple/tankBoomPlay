@@ -256,7 +256,7 @@ let setServer = (server) => {
                  socket.join(socket.room)
                  userObj.room = socket.room;
                  allOnlineUsers.push(userObj)//Using redis hash should improve performance
-                 console.log(allOnlineUsers)
+                 console.log("all online users :",allOnlineUsers)
                  socket.emit("connected_room", response.generate(false,"User entered room",1,allOnlineUsers));
 
                  socket.to(socket.room).broadcast.emit('user_entered',response.generate(false,"New user enter to room",1,userObj));
@@ -271,7 +271,7 @@ let setServer = (server) => {
         socket.on("playerMovementDirection",(data)=>{
             console.log("Player Movement Data for : "+data.userId);
             console.log("Current Player List :" ,allOnlineUsers)
-            let currentPlayer = getPlayer(data);
+           /* let currentPlayer = getPlayer(data);
             if(check.isEmpty(currentPlayer)){
                 io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
@@ -282,7 +282,7 @@ let setServer = (server) => {
 
                 io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
 
-            }
+            }*/
                 
         })//End Handling Player Movement
 
