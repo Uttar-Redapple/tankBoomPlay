@@ -281,7 +281,7 @@ let setServer = (server) => {
                 let playerMove = updatePlayerPos(data,currentPlayer);
 
                 //io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
-                socket.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                socket.emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
 
             }
                    
