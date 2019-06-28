@@ -30,7 +30,7 @@ let getPlayer = (data)=>{
         }
     }
 
-}//End get object
+}//End get Player object
 
 //update Player Position
 let updatePlayerPos = (data,player)=>{
@@ -229,6 +229,7 @@ let setServer = (server) => {
 
 
             let userObj = {userId:socket.userId,userMaxHealth:userMaxHealth,X:userPosX,Y:userPosY,camPosX:userCamPosX,camPosY:userCamPosY,createdOn:Date.now()}
+            allOnlineUsers.push(userObj);
            
             socket.emit("user_connected", response.generate(false,"User Added",1,userObj));
 
@@ -247,19 +248,22 @@ let setServer = (server) => {
                 gameConf.maxObjectHealth=gameConfig.maxObjectHealth
                 gameConf.maxPlayerHealth=gameConfig.maxPlayerHealth
                 socket.emit("gameReply",response.generate(false,"Game Config",1,gameConf))
-                let currentUser = data;
-                userObj.userName = currentUser.userName;
+                //let currentUser = data;
+                let currentUser = getPlayer(data);
+                currentUser.userName = data.userName;
 
                  // setting room name
                  socket.room = 'gameRoom'
                  // joining game-room.
                  socket.join(socket.room)
-                 userObj.room = socket.room;
-                 allOnlineUsers.push(userObj)//Using redis hash should improve performance
+                 currentUser.room = socket.room;
+                 //allOnlineUsers.push(userObj)//Using redis hash should improve performance
+                 var userIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(data.userId);
+                 allOnlineUsers.splice(userIndex,1,currentUser)
                  console.log("all online users :",allOnlineUsers)
                  socket.emit("connected_room", response.generate(false,"User entered room",1,allOnlineUsers));
 
-                 socket.to(socket.room).broadcast.emit('user_entered',response.generate(false,"New user enter to room",1,userObj));
+                 socket.to(socket.room).broadcast.emit('user_entered',response.generate(false,"New user enter to room",1,currentUser));
             })
 
 
@@ -272,17 +276,18 @@ let setServer = (server) => {
             console.log("Player Movement Data for : "+data.userId);
             console.log("Current Player List :" ,allOnlineUsers)
            let currentPlayer = getPlayer(data);
+
             if(check.isEmpty(currentPlayer)){
-                //io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
-                myIo.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
+                //myIo.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
 
             }else{
                 console.log("Current Player : "+ currentPlayer.userId);
                 let playerMove = updatePlayerPos(data,currentPlayer);
 
-                //io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
-                myIo.emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+                //myIo.emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
 
             }
                 
