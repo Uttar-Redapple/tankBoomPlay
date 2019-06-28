@@ -269,8 +269,10 @@ let setServer = (server) => {
         
         //Handling Player movement
         socket.on("playerMovementDirection",(data)=>{
-            //console.log("Player Movement Data for : "+data.userId);
+            console.log("Player Movement Data for : "+data.userId);
+            console.log("Current Player List :" + allOnlineUsers)
             let currentPlayer = getPlayer(data);//Aynchronous code can be used to improve performance
+            console.log("current player is :"+currentPlayer.userId)
             if(check.isEmpty(currentPlayer)){
                 //io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
                 socket.emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
