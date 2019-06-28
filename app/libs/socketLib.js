@@ -236,38 +236,44 @@ let setServer = (server) => {
 
             socket.on("gameRequest",(data)=>{
 
-                console.log("Game Request Received")
-                let gameConf = {};
-                gameConf.setBoundX=gameConfig.setBoundX
-                gameConf.setBoundY=gameConfig.setBoundY
-                gameConf.gameCameraHeight=gameConfig.gameCameraHeight
-                gameConf.gameCameraWidth=gameConfig.gameCameraWidth
-                gameConf.boundXLimit=gameConfig.boundXLimit
-                gameConf.boundYLimit=gameConfig.boundYLimit
-                gameConf.maxNumberOfObstacles=gameConfig.maxNumberOfObstacles
-                gameConf.maxObjectHealth=gameConfig.maxObjectHealth
-                gameConf.maxPlayerHealth=gameConfig.maxPlayerHealth
-                socket.emit("gameReply",response.generate(false,"Game Config",1,gameConf))
-                //let currentUser = data;
-                let currentUser = getPlayer(data);
-                currentUser.userName = data.userName;
+                console.log("Game Request Received with data :",data)
+                if(check.isEmpty(data)){
+                    socket.emit("gameReply",response.generate(false,"data received with error from FrontEnd",1,data))
 
-                 // setting room name
-                 socket.room = 'gameRoom'
-                 // joining game-room.
-                 socket.join(socket.room)
-                 currentUser.room = socket.room;
-                 //allOnlineUsers.push(userObj)//Using redis hash should improve performance
-                 var userIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(data.userId);
-                 allOnlineUsers.splice(userIndex,1,currentUser)
-                 console.log("all online users :",allOnlineUsers)
-                 socket.emit("connected_room", response.generate(false,"User entered room",1,allOnlineUsers));
+                }else{
+                    let gameConf = {};
+                    gameConf.setBoundX=gameConfig.setBoundX
+                    gameConf.setBoundY=gameConfig.setBoundY
+                    gameConf.gameCameraHeight=gameConfig.gameCameraHeight
+                    gameConf.gameCameraWidth=gameConfig.gameCameraWidth
+                    gameConf.boundXLimit=gameConfig.boundXLimit
+                    gameConf.boundYLimit=gameConfig.boundYLimit
+                    gameConf.maxNumberOfObstacles=gameConfig.maxNumberOfObstacles
+                    gameConf.maxObjectHealth=gameConfig.maxObjectHealth
+                    gameConf.maxPlayerHealth=gameConfig.maxPlayerHealth
+                    socket.emit("gameReply",response.generate(false,"Game Config",1,gameConf))
+                    //let currentUser = data;
+    
+                    let currentUser = getPlayer(data);
+                    currentUser.userName = data.userName;
+    
+                     // setting room name
+                     socket.room = 'gameRoom'
+                     // joining game-room.
+                     socket.join(socket.room)
+                     currentUser.room = socket.room;
+                     //allOnlineUsers.push(userObj)//Using redis hash should improve performance
+                     var userIndex = allOnlineUsers.map(function(user) { return user.userId; }).indexOf(data.userId);
+                     allOnlineUsers.splice(userIndex,1,currentUser)
+                     console.log("all online users :",allOnlineUsers)
+                     socket.emit("connected_room", response.generate(false,"User entered room",1,allOnlineUsers));
+    
+                     socket.to(socket.room).broadcast.emit('user_entered',response.generate(false,"New user enter to room",1,currentUser));
 
-                 socket.to(socket.room).broadcast.emit('user_entered',response.generate(false,"New user enter to room",1,currentUser));
+                }
+
             })
 
-
-2
           
         }) // end of listening addUser and gameRequest event
         

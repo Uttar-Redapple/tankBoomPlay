@@ -3,7 +3,7 @@ let gameConfig = {};
 gameConfig.setBoundX = 5500;
 gameConfig.setBoundY = 5500;
 
-gameConfig.maxNumberOfObstacles = 120;
+gameConfig.maxNumberOfObstacles = 50;
 gameConfig.maxObjectHealth=0.5;
 
 gameConfig.maxPlayerHealth=1;
