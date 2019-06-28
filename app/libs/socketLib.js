@@ -565,7 +565,7 @@ let setServer = (server) => {
  
 
 
-      /*  socket.on('disconnect', () => {
+        socket.on('disconnect', () => {
             // disconnect the user from socket
             // remove the user from online list
             // unsubscribe the user from his own channel
@@ -590,7 +590,7 @@ let setServer = (server) => {
         
 
 
-        }) // end of on disconnect*/
+        }) // end of on disconnect
 
 
 
