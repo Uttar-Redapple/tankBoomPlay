@@ -271,22 +271,19 @@ let setServer = (server) => {
         socket.on("playerMovementDirection",(data)=>{
             console.log("Player Movement Data for : "+data.userId);
             console.log("Current Player List :" ,allOnlineUsers)
-            getPlayer(data,(err,result)=>{
-                if(err){
-                    console.log("Error while fetching player object :"+ err);
-                    io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"error occured",0,err))
-                }else{
-                    let currentPlayer=result;
-                    console.log("Current Player : "+ currentPlayer.userId);
-                    let playerMove = updatePlayerPos(data,currentPlayer);
+            let currentPlayer = getPlayer(data);
+            if(check.isEmpty(currentPlayer)){
+                io.in(socket.room).emit("playerMovementUpdate",response.generate(true,"data received with some error,No such player found in list",0,currentPlayer))
 
-                    io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
-                   // socket.emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
 
-                }
-            });//Aynchronous code can be used to improve performance            
-                   
+            }else{
+                console.log("Current Player : "+ currentPlayer.userId);
+                let playerMove = updatePlayerPos(data,currentPlayer);
 
+                io.in(socket.room).emit("playerMovementUpdate",response.generate(false,"Player Movement Updated",1,playerMove))
+
+            }
+                
         })//End Handling Player Movement
 
         //Handling Turret Rotation
@@ -370,7 +367,7 @@ let setServer = (server) => {
                 if(check.isEmpty(playerHurt)){
                     socket.emit("playerHealthUpdate",response.generate(true,"data received with some error,No such player found in list",0,playerHurt))
                 }else if(data.obstacleType==3){
-                    console.log(data.userId+"hit by pentagon");
+                    //console.log(data.userId+"hit by pentagon");
                     if(playerHurt.userMaxHealth>0.05){
                         playerHurt.userMaxHealth-=0.05;
                         playerHurt.isDead=false;
@@ -382,7 +379,7 @@ let setServer = (server) => {
                         io.in(socket.room).emit("userKilled",{userId:deadPlayer})
                     }
                 }else if(data.obstacleType==2){
-                    console.log(data.userId+"hit by triangle");
+                    //console.log(data.userId+"hit by triangle");
                     if(playerHurt.userMaxHealth>0.033){
                         playerHurt.userMaxHealth-=0.033;
                         playerHurt.isDead=false;
@@ -395,7 +392,7 @@ let setServer = (server) => {
                     }
 
                 }else if(data.obstacleType==1){
-                    console.log(data.userId+"hit by triangle");
+                    //console.log(data.userId+"hit by triangle");
                     if(playerHurt.userMaxHealth>0.025){
                         playerHurt.userMaxHealth-=0.025;
                         playerHurt.isDead=false;
