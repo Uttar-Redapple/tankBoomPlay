@@ -1,3 +1,4 @@
+var isPressed = false;
 var Menu = function() {};
 Menu.prototype = {
     init: function() {
@@ -21,7 +22,15 @@ Menu.prototype = {
         allObstacles = [];
 
     }, //End of create function
-
+    update: function(){
+        if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
+            if(!isPressed){
+                isPressed = true;
+                Client.GameRequestEmit(name_value.value);
+            }
+            console.log("Pressed Enter...........");
+        }
+    },
     CreateMenu: function() {
         menuGroup = game.add.group();
 
@@ -65,7 +74,10 @@ Menu.prototype = {
 
         if (name_value.value != "") {
             // setTimeout(StateTransition.TransitToGamePlay, 100);
-            Client.GameRequestEmit(name_value.value);
+            if(!isPressed){
+                isPressed = true;
+                Client.GameRequestEmit(name_value.value);
+            }
         }
     },
 

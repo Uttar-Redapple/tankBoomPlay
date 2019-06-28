@@ -5,6 +5,7 @@ var LoadAssets = {
         // game.load.image('vjoy_base', 'assets/virtualJoystick/base.png');
         // game.load.image('vjoy_body', 'assets/virtualJoystick/body.png');
         // game.load.image('vjoy_cap', 'assets/virtualJoystick/cap.png');
+        game.load.spritesheet('gamepad', 'assets/gamepad/gamepad.png', 100, 100);
 
         // LOAD FONT
         game.load.bitmapFont('riccicFreeFont', "fonts/riffic_free_bold.png", "fonts/riffic_free_bold.fnt");

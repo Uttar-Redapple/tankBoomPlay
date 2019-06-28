@@ -52,6 +52,18 @@ Gameplay.prototype = {
         boundXlimit = setBoundX - game.camera.width;
         boundYlimit = setBoundY - game.camera.height;
         this.CreateObsatcles();
+
+        //SHOW THE VIRTUAL JOYSTICK
+        if (!game.device.desktop) {
+            moveGamepad = game.plugins.add(Phaser.Plugin.VirtualGamepad);
+            moveJoystick = moveGamepad.addJoystick(150, 600, 1.2, 'gamepad');
+            moveGamepadButton = moveGamepad.addButton(150, 600, 0, 'gamepad');
+
+            rotateGamepad = game.plugins.add(Phaser.Plugin.VirtualJoystick);
+            rotateJoystick = rotateGamepad.addJoystick(1100, 600, 1.2, 'gamepad');
+            rotateGamepadButton = rotateGamepad.addButton(1100, 600, 0, 'gamepad');
+        }
+
         GameOverPopup.CreateGameOverPopup();
     }, //End of create function
     ReturnSpeed: function(){
@@ -75,9 +87,20 @@ Gameplay.prototype = {
                     }
                 }
                 allPlayers[i].RotateTurret();
-                if (game.input.activePointer.leftButton.isDown) {
-                    if(allPlayers[i].playerId == playerUniqueId){
-                        Client.FireEmit(allPlayers[i].playerHead.angle);
+
+                //FIRE BULLETS USING JOYSTICK
+                if (!game.device.desktop) {
+                    if (rotateJoystick.properties.inUse) {
+                        if (allPlayers[i].playerId == playerUniqueId) {
+                            Client.FireEmit(allPlayers[i].playerHead.angle);
+                        }
+                    }
+                } 
+                else{
+                    if (game.input.activePointer.leftButton.isDown) {
+                        if(allPlayers[i].playerId == playerUniqueId){
+                            Client.FireEmit(allPlayers[i].playerHead.angle);
+                        }
                     }
                 }
             }
@@ -165,15 +188,32 @@ Gameplay.prototype = {
         allPlayers.push(playerObj);
     },
     MovePlayerEmit: function(playerObj){
-        if (cursors.left.isDown || game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            Client.PlayerMovementDirection("left");
-        } else if (cursors.right.isDown || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-            Client.PlayerMovementDirection("right");
-        } else if (cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.W)) {
-            Client.PlayerMovementDirection("up");
-        } else if (cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            Client.PlayerMovementDirection("down");
+
+        //VIRTUAL JOYSTICK FOR MOVE THE PLAYER
+        if (!game.device.desktop) {
+            if (moveJoystick.properties.left) {
+                Client.PlayerMovementDirection("left");
+            } else if (moveJoystick.properties.right) {
+                Client.PlayerMovementDirection("right");
+            } else if (moveJoystick.properties.up) {
+                Client.PlayerMovementDirection("up");
+            } else if (moveJoystick.properties.down) {
+                Client.PlayerMovementDirection("down");
+            }
+        } 
+
+        else{
+            if (cursors.left.isDown || game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+                Client.PlayerMovementDirection("left");
+            } else if (cursors.right.isDown || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+                Client.PlayerMovementDirection("right");
+            } else if (cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+                Client.PlayerMovementDirection("up");
+            } else if (cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+                Client.PlayerMovementDirection("down");
+            }
         }
+
     },
     MovePlayerOn: function(data){
         for(var i = 0;i<allPlayers.length;i++){

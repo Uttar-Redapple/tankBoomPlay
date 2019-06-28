@@ -70,6 +70,7 @@ var GameOverPopup = {
         // GameOverPopup.HideGameOverPopup();
 
         // //TRANSIT TO MAIN MENU
+        Client.AddUser();
         StateTransition.TransitToMenu();
         // isGameOver = false;
 

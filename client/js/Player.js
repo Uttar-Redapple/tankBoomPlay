@@ -56,9 +56,18 @@ var Player = function() {
     this.RotateTurret = function() {
         // Debug.log("Rotate Turret............"+this.playerId);
         if(this.playerId === playerUniqueId){
-            this.playerHead.rotation = game.physics.arcade.angleToPointer(this.playerGroup);    
-            // Debug.log("The angle........"+this.playerHead.angle);
-            Client.RotationEmit(this.playerHead.angle);
+
+            if (!game.device.desktop) {
+                if (rotateJoystick.properties.inUse) {
+                    this.playerHead.rotation = rotateJoystick.properties.rotation;
+                    Client.RotationEmit(this.playerHead.angle);
+                }
+            } 
+            else{
+                this.playerHead.rotation = game.physics.arcade.angleToPointer(this.playerGroup);    
+                // Debug.log("The angle........"+this.playerHead.angle);
+                Client.RotationEmit(this.playerHead.angle);
+            }
         }
     }
     this.FireBullets = function(playerAngle) {
@@ -81,7 +90,7 @@ var Player = function() {
     PlayerBulletCollision = function(sprite1, sprite2) {
         sprite2.kill();
         Client.PlayerHitUpdate(sprite1.children[2].name,"bullet",0);
-        console.log("Bullets Collision with player............"+sprite1.children[2].name);
+        // console.log("Bullets Collision with player............"+sprite1.children[2].name);
         // Client.ObsatcleHitUpdate(this.obstacleId,"player");
     }
 

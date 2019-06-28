@@ -1,5 +1,5 @@
 //FOR SERVER 
-var baseURL = "http://18.185.97.126:6070";
+var baseURL = "http://18.185.97.126:9090";
 
 var playerUniqueId;
 
@@ -53,13 +53,22 @@ var score = 0;
 var scoreText;
 var scoreValueText;
 
-
-
+//FOR TIMER
 var time;
 var TimerResult;
 var timerIcon;
 var totalTimeToPrint;
 var isTimerPaused = false;
+
+//FOR VIRTUAL JOYSTICK
+//Virtual joystick for move the player and camera
+var moveGamepad;
+var moveJoystick;
+var moveGamepadButton;
+//Virtual joystick for rotate the turret and fire bullets
+var rotateGamepad;
+var rotateJoystick;
+var rotateGamepadButton;
 
 // var isGameOver;
 

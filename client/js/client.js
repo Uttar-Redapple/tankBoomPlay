@@ -56,27 +56,29 @@ Client.socket.on('user_entered', function(data) {
     Gameplay.prototype.CreateSinglePlayer(data);
 });
 Client.socket.on('playerMovementUpdate', function(data) {
-    // Debug.log("The Player Movement Update..........." + JSON.stringify(data));
-    Gameplay.prototype.MovePlayerOn(data);
+    // console.log("The Player Movement Update..........." + JSON.stringify(data));
+    if(data.status == 1){
+        Gameplay.prototype.MovePlayerOn(data);
+    }
 });
 Client.socket.on('playerRotationOn', function(data) {
     // Debug.log("The Player Rotation Update..........." + JSON.stringify(data));
     Gameplay.prototype.RotatePlayerTurret(data);
 });
 Client.socket.on('playerFireOn', function(data) {
-    Debug.log("The Player Fire Update..........." + JSON.stringify(data));
+    // Debug.log("The Player Fire Update..........." + JSON.stringify(data));
     Gameplay.prototype.FireBullet(data);
 });
 Client.socket.on('playerHealthUpdate', function(data) {
-    console.log("The Player Health Update..........." + JSON.stringify(data));
+    // console.log("The Player Health Update..........." + JSON.stringify(data));
     Gameplay.prototype.SetPlayerHealth(data.userId,data.userMaxHealth,data.isDead);
 });
 Client.socket.on('userKilled', function(data) {
-    console.log("The Player Killed..........." + JSON.stringify(data));
+    // console.log("The Player Killed..........." + JSON.stringify(data));
     Gameplay.prototype.DestroyPlayer(data.userId);
 });
 Client.socket.on('userDisconnected', function(data) {
-    console.log("The Player Disconnected..........." + JSON.stringify(data));
+    // console.log("The Player Disconnected..........." + JSON.stringify(data));
     Gameplay.prototype.DestroyPlayer(data.userId);
 });
 
@@ -102,6 +104,7 @@ Client.GameRequestEmit = function(userName) {
     Debug.log("Enter into the Game Request emit"+userName);
     var data = {
         "userName" : userName,
+        "userId" : playerUniqueId,
     };
 
     Client.socket.emit('gameRequest', data);
@@ -166,7 +169,7 @@ ObstacleHealthUpdateOn = function(data){
 }
 //Player
 Client.PlayerMovementDirection = function(movementDirection){
-    // Debug.log("The User Id....................."+Database.LoadData("userId"));
+    // console.log("The User Id....................."+playerUniqueId);
     var data = {
         "userId" : playerUniqueId,
         "dir" : movementDirection,
@@ -190,7 +193,7 @@ Client.FireEmit = function(playerAngle){
 }
 
 Client.PlayerHitUpdate = function(userId,hitType,obstacleType){
-    console.log("Player Hit Update Emit..............................."+userId + "The hit Type..........."+hitType + "The Obstalce type....."+obstacleType);
+    // console.log("Player Hit Update Emit..............................."+userId + "The hit Type..........."+hitType + "The Obstalce type....."+obstacleType);
     var data = {
         "userId" : userId,
         "isHit" : true,
